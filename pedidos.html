@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Sistema de Pedidos</title>
+<style>
+  /* Estilos para imitar a aparência da página na imagem */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .total {
+    text-align: right;
+    margin-top: 20px;
+  }
+  button {
+    padding: 10px;
+    margin-right: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Sistema de Pedidos</h1>
+  <!-- Tabela para os produtos com preços fixos -->
+  <table id="tabelaPedidos">
+    <tr>
+      <th>Produto</th>
+      <th>Preço</th>
+      <th>Quantidade</th>
+    </tr>
+    <tr>
+      <td>Expresso</td>
+      <td>R$2,50</td>
+      <td><input type="number" value="0" min="0" onchange="calcularTotal()"></td>
+    </tr>
+    <tr>
+      <td>Capuccino</td>
+      <td>R$4,00</td>
+      <td><input type="number" value="0" min="0" onchange="calcularTotal()"></td>
+    </tr>
+    <tr>
+      <td>Salgado</td>
+      <td>R$3,00</td>
+      <td><input type="number" value="0" min="0" onchange="calcularTotal()"></td>
+    </tr>
+    <tr>
+      <td>Doce</td>
+      <td>R$3,50</td>
+      <td><input type="number" value="0" min="0" onchange="calcularTotal()"></td>
+    </tr>
+  </table>
+
+  <!-- Botões de ação -->
+  <button onclick="calcularTotal()">Fechar conta</button>
+  <button onclick="limparDados()">Limpar dados</button>
+
+  <!-- Exibição do total -->
+  <div class="total">
+    <strong>Total: R$<span id="totalConta">0,00</span></strong>
+  </div>
+</div>
+
+<script>
+  // Função para calcular o total da conta
+  function calcularTotal() {
+    // Preços dos produtos conforme tabela
+    var precos = {
+      'Expresso': 2.50,
+      'Capuccino': 4.00,
+      'Salgado': 3.00,
+      'Doce': 3.50
+    };
+
+    var total = 0; // Inicializa o total
+
+    // Seleciona todos os inputs de quantidade da tabela de pedidos
+    var inputs = document.querySelectorAll('#tabelaPedidos input');
+
+    // Itera sobre os inputs e calcula o total
+    inputs.forEach(function(input, index) {
+      var quantidade = input.value; // Pega a quantidade
+      var produto = input.closest('tr').querySelector('td:first-child').textContent; // Encontra o nome do produto
+      var preco = precos[produto]; // Obtém o preço do produto
+      total += quantidade * preco; // Calcula o total parcial e soma ao total geral
+    });
+
+    // Atualiza o total na página
+    document.getElementById('totalConta').textContent = total.toFixed(2).replace('.', ',');
+  }
+
+  // Função para limpar os dados dos inputs
+  function limparDados() {
+    // Seleciona todos os inputs de quantidade e os reseta para 0
+    document.querySelectorAll('#tabelaPedidos input').forEach(function(input) {
+      input.value = 0;
+    });
+    calcularTotal(); // Recalcula o total para atualizar a exibição para R$0,00
+  }
+</script>
+
+</body>
+</html>
+
